@@ -1,5 +1,15 @@
-// Dynamically generate class from file data.
-// Example:
+/**
+ * Dynamically generate class from file data.
+ * Example: given JSON schema
+ *  {
+ *    "type": "object",
+ *    "properties": {
+ *      "firstName": { "type": "string"},
+ *      "lastName": {"type": "string"}
+ *    },
+ *    "required": ["firstName", "lastName"]
+ *  }
+ */
 const person = {
   firstName: "John",
   lastName: "Doe",
