@@ -1,2 +1,7 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<svelte:head>
+  <title>Cronopio</title>
+  <meta name="description" content="Home" />
+</svelte:head>
+
+<h1>Welcome to Cronopio</h1>
+<p>A file based database</p>
