@@ -9,7 +9,6 @@
   <h2>Getting Started</h2>
   <section>
     <h3>Define JSON Schema</h3>
-    <h4>JSON Schema Language</h4>
     <pre>
     {@html `
 const schema = {
@@ -102,8 +101,9 @@ const schema = {
         </pre>
 
     <h3>TypeScript</h3>
-    Generate JSON schema from interface
+    <h4>Define Types</h4>
     <pre>
+    
 {@html `// Define type
 
 interface Animal {
@@ -117,6 +117,7 @@ interface EulipotyphlaAnimals {
   collection: Animal[]
 }
       `}</pre>
+    <h4>Generate JSON schema from interface:</h4>
     <ul>
       <li>
         <h4>typescript-json-schema</h4>
@@ -133,6 +134,20 @@ const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
         >{@html `EulipotyphlaAnimals interface`}</code
       >
     </div>
+  </section>
+  <section>
+    <h3>Define Data</h3>
+    <pre>{@html `const animals = {
+  collection: [
+    {id: 0, name: "Shrew", family: "Soricidae", order: "Eulipotyphla"},
+    {id: 1, name: "moonrat", family: "Erinaceidae", order: "Eulipotyphla"},
+    {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"}
+  ]
+};`}</pre>
+  </section>
+  <section>
+    <h3>Create Database</h3>
+    <pre>{@html `const db = FileDB(schema, animals, './db/animals.json');`}</pre>
   </section>
 </section>
 
