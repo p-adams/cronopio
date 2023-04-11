@@ -13,40 +13,124 @@
     <pre>
     {@html `
 const schema = {
-  type: "object",
-  properties: {
-    firstName: { type: "string" },
-    lastName: { type: "string" },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Eulipotyphla animals",
+  "description": "A collection of Eulipotyphla animals",
+  "type": "object",
+  "properties": {
+    "collection": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "family": {
+              "type": "string"
+            },
+            "order": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "family",
+            "order"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "family": {
+              "type": "string"
+            },
+            "order": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "family",
+            "order"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "family": {
+              "type": "string"
+            },
+            "order": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "family",
+            "order"
+          ]
+        }
+      ]
+    }
   },
-  required: ["firstName", "lastName"],
-};`}
+  "required": [
+    "collection"
+  ]
+}
+;`}
         </pre>
 
     <h3>TypeScript</h3>
     Generate JSON schema from interface
     <pre>
-      {@html `
-// Define type
+{@html `// Define type
 
-interface Person {
-  firstName: string
-  lastName: string
+interface Animal {
+  id: number
+  name: string
+  family: string
+  order: string
+}
+
+interface EulipotyphlaAnimals {
+  collection: Animal[]
 }
       `}</pre>
     <ul>
       <li>
         <h4>typescript-json-schema</h4>
         <pre>{@html `import { generateSchema } from "typescript-json-schema";
-const personSchema = generateSchema(Person);`}</pre>
+const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
       </li>
       <li>
         <h4>Using ts-json-schema-generator</h4>
-        <pre>{@html `npx ts-json-schema-generator --path 'path/to/Person.ts' --type Person --noExtraProps --required`}</pre>
+        <pre>{@html `npx ts-json-schema-generator --path 'path/to/EulipotyphlaAnimals.ts' --type EulipotyphlaAnimals --noExtraProps --required`}</pre>
       </li>
     </ul>
     <div>
       The output of this command should be a JSON schema that corresponds to the <code
-        >{@html `Person interface`}</code
+        >{@html `EulipotyphlaAnimals interface`}</code
       >
     </div>
   </section>
