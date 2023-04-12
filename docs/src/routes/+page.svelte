@@ -9,96 +9,36 @@
   <h2>Getting Started</h2>
   <section>
     <h3>Define JSON Schema</h3>
-    <pre>
-    {@html `
-const schema = {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/product.schema.json",
+    <pre>{@html `const schema = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Eulipotyphla animals",
   "description": "A collection of Eulipotyphla animals",
   "type": "object",
   "properties": {
     "collection": {
       "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "string"
-            },
-            "family": {
-              "type": "string"
-            },
-            "order": {
-              "type": "string"
-            }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
           },
-          "required": [
-            "id",
-            "name",
-            "family",
-            "order"
-          ]
+          "name": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          }
         },
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "string"
-            },
-            "family": {
-              "type": "string"
-            },
-            "order": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "name",
-            "family",
-            "order"
-          ]
-        },
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "string"
-            },
-            "family": {
-              "type": "string"
-            },
-            "order": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "name",
-            "family",
-            "order"
-          ]
-        }
-      ]
+        "required": ["id", "name", "family", "order"]
+      }
     }
   },
-  "required": [
-    "collection"
-  ]
-}
-;`}
-        </pre>
+  "required": ["collection"]
+};`}</pre>
 
     <h3>TypeScript</h3>
     <h4>Define Types</h4>
