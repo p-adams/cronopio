@@ -87,7 +87,7 @@ const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
   </section>
   <section>
     <h3>Create Database</h3>
-    <pre>{@html `const db = FileDB(schema, animals, 'Animals');`}</pre>
+    <pre>{@html `const db = FileDB(schema, animals, './Animals.json');`}</pre>
   </section>
 </section>
 
