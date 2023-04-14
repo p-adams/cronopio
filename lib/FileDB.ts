@@ -19,7 +19,7 @@ type FileDB<T> = {
   getPath(): string;
 };
 
-function createFileDB<T>(
+export function createFileDB<T>(
   schema: SchemaType<T>,
   data: T,
   path: string
@@ -46,18 +46,3 @@ function createFileDB<T>(
     throw error;
   }
 }
-
-const schema: SchemaType<{ firstName: string; lastName: string }> = {
-  type: "object",
-  properties: {
-    firstName: { type: "string" },
-    lastName: { type: "string" },
-  },
-  required: ["firstName", "lastName"],
-};
-const person = {
-  firstName: "John",
-  lastName: "Doe",
-};
-
-console.log(createFileDB(schema, person, "./Person.json"));
