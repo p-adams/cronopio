@@ -4,9 +4,9 @@ function writeJsonToFile<T>(data: T, path: string) {
   try {
     const encoder = new TextEncoder();
     Deno.writeFileSync(path, encoder.encode(JSON.stringify(data)));
-    console.log("Successfully wrote data to file!");
+    return 0;
   } catch (e) {
-    console.error(e.message);
+    return e.message;
   }
 }
 
@@ -31,4 +31,4 @@ const person = {
   lastName: "Doe",
 };
 
-FileDB(schema, person, "./Person.json");
+console.log(FileDB(schema, person, "./Person.json"));
