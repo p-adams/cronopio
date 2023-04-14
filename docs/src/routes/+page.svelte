@@ -39,7 +39,13 @@
   },
   "required": ["collection"]
 };`}</pre>
-
+    <span
+      >All schemas must <code>{@html `extend`}</code> the
+      <code>{@html `CollectionInterface`}</code>
+      <pre>{@html `export type CollectionInterface<T> = {
+  collection: T[];
+};`}</pre></span
+    >
     <h3>TypeScript</h3>
     <h4>Define Types</h4>
     <pre>
@@ -77,7 +83,7 @@ const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
   </section>
   <section>
     <h3>Define Data</h3>
-    <pre>{@html `const animals = {
+    <pre>{@html `const animals: EulipotyphlaAnimals = {
   collection: [
     {id: 0, name: "Shrew", family: "Soricidae", order: "Eulipotyphla"},
     {id: 1, name: "moonrat", family: "Erinaceidae", order: "Eulipotyphla"},
@@ -87,7 +93,7 @@ const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
   </section>
   <section>
     <h3>Create Database</h3>
-    <pre>{@html `const db = FileDB(schema, animals, './Animals.json');`}</pre>
+    <pre>{@html `const db = createFileDB(schema, animals, "./Animals.json");`}</pre>
   </section>
 </section>
 

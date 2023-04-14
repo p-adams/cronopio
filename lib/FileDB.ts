@@ -10,7 +10,7 @@ function writeJsonToFile<T>(data: T, path: string) {
   }
 }
 
-type FileDB<T extends CollectionInterface<T>> = {
+type FileDB<T extends CollectionInterface<any>> = {
   schema: SchemaType<T>;
   data: T;
   path: string;
@@ -19,7 +19,7 @@ type FileDB<T extends CollectionInterface<T>> = {
   getPath(): string;
 };
 
-export function createFileDB<T extends CollectionInterface<T>>(
+export function createFileDB<T extends CollectionInterface<any>>(
   schema: SchemaType<T>,
   data: T,
   path: string

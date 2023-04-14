@@ -1,0 +1,22 @@
+{
+  "collection": [
+    {
+      "id": 0,
+      "name": "Shrew",
+      "family": "Soricidae",
+      "order": "Eulipotyphla"
+    },
+    {
+      "id": 1,
+      "name": "moonrat",
+      "family": "Erinaceidae",
+      "order": "Eulipotyphla"
+    },
+    {
+      "id": 2,
+      "name": "Gansu mole",
+      "family": "Talpidae",
+      "order": "Eulipotyphla"
+    }
+  ]
+}
