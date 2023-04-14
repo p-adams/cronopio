@@ -1,6 +1,6 @@
 import { SchemaValidator, SchemaType } from "./Schema.ts";
 
-function writeJsonToFile<T>(path: string, data: T) {
+function writeJsonToFile<T>(data: T, path: string) {
   try {
     const encoder = new TextEncoder();
     Deno.writeFileSync(path, encoder.encode(JSON.stringify(data)));
@@ -13,7 +13,7 @@ function writeJsonToFile<T>(path: string, data: T) {
 export function FileDB<T>(schema: SchemaType<T>, data: T, path: string) {
   try {
     SchemaValidator(data, schema);
-    writeJsonToFile(path, data);
+    writeJsonToFile(data, path);
   } catch (error) {
     console.error("ERROR ", error);
   }
