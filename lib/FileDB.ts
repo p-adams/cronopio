@@ -10,14 +10,43 @@ function writeJsonToFile<T>(data: T, path: string) {
   }
 }
 
-export function FileDB<T>(schema: SchemaType<T>, data: T, path: string) {
+type FileDB<T> = {
+  schema: SchemaType<T>;
+  data: T;
+  path: string;
+  getData(): T;
+  getSchema(): SchemaType<T>;
+  getPath(): string;
+};
+
+function createFileDB<T>(
+  schema: SchemaType<T>,
+  data: T,
+  path: string
+): FileDB<T> {
   try {
     SchemaValidator(data, schema);
     writeJsonToFile(data, path);
+    return {
+      schema,
+      data,
+      path,
+      getData() {
+        return this.data;
+      },
+      getSchema() {
+        return this.schema;
+      },
+      getPath() {
+        return this.path;
+      },
+    };
   } catch (error) {
     console.error("ERROR ", error);
+    throw error;
   }
 }
+
 const schema: SchemaType<{ firstName: string; lastName: string }> = {
   type: "object",
   properties: {
@@ -31,4 +60,4 @@ const person = {
   lastName: "Doe",
 };
 
-console.log(FileDB(schema, person, "./Person.json"));
+console.log(createFileDB(schema, person, "./Person.json"));
