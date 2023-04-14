@@ -1,4 +1,4 @@
-import { SchemaValidator, SchemaType } from "./Schema.ts";
+import { SchemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
 
 function writeJsonToFile<T>(data: T, path: string) {
   try {
@@ -10,7 +10,7 @@ function writeJsonToFile<T>(data: T, path: string) {
   }
 }
 
-type FileDB<T> = {
+type FileDB<T extends CollectionInterface<T>> = {
   schema: SchemaType<T>;
   data: T;
   path: string;
@@ -19,7 +19,7 @@ type FileDB<T> = {
   getPath(): string;
 };
 
-export function createFileDB<T>(
+export function createFileDB<T extends CollectionInterface<T>>(
   schema: SchemaType<T>,
   data: T,
   path: string

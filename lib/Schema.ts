@@ -1,9 +1,16 @@
 import Ajv from "https://esm.sh/ajv@8.12.0";
 import type { JSONSchemaType } from "https://esm.sh/ajv@8.12.0";
 
-export type SchemaType<T> = JSONSchemaType<T>;
+export type CollectionInterface<T> = {
+  collection: T[];
+};
 
-export function SchemaValidator<T>(obj: T, schema: SchemaType<T>) {
+export type SchemaType<T extends CollectionInterface<any>> = JSONSchemaType<T>;
+
+export function SchemaValidator<T extends CollectionInterface<any>>(
+  obj: T,
+  schema: SchemaType<T>
+) {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
   const isValid = validate(obj);
