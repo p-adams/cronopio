@@ -1,10 +1,23 @@
 import { SchemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
-import { FileData } from "./FileData.ts";
-function writeJsonToFile<T>(data: T, path: string) {
+
+function isFileExistsSync(path: string): boolean {
   try {
+    const stats = Deno.statSync(path);
+    return stats.isFile;
+  } catch (e) {
+    return false;
+  }
+}
+
+function writeJsonToFile<T>(data: T, path: string): boolean | string {
+  try {
+    const fileExists = isFileExistsSync(path);
+    if (fileExists) {
+      return true;
+    }
     const encoder = new TextEncoder();
     Deno.writeFileSync(path, encoder.encode(JSON.stringify(data)));
-    return 0;
+    return false;
   } catch (e) {
     return e.message;
   }
