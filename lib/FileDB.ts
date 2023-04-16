@@ -29,6 +29,41 @@ async function readJsonFile(path: string): Promise<any> {
   return data;
 }
 
+function matchQuery(item: any, query: Record<string, unknown>): boolean {
+  for (const key in query) {
+    if (typeof query[key] === "object" && query[key] !== null) {
+      // Recursively match nested properties
+      if (!matchQuery(item[key], query[key] as Record<string, unknown>)) {
+        return false;
+      }
+    } else {
+      // Access nested properties using dot notation
+      const keys = key.split(".");
+      let value = item;
+      for (const k of keys) {
+        value = value[k];
+        if (value === undefined) {
+          return false;
+        }
+      }
+      if (value !== query[key]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+function $find(data: any, queryObj?: Record<string, unknown>) {
+  if (!queryObj) {
+    return data;
+  }
+  const filteredData = data.collection.filter((item: any) => {
+    // Check if item matches queryObj
+    return matchQuery(item, queryObj);
+  });
+  return filteredData;
+}
+
 type FileDB<T extends CollectionInterface<any>> = {
   schema: SchemaType<T>;
   data: T;
@@ -53,19 +88,7 @@ export function createFileDB<T extends CollectionInterface<any>>(
       path,
       async find(queryObj?: Record<string, unknown>) {
         const data = await readJsonFile(this.getPath());
-        if (!queryObj) {
-          return data;
-        }
-        const filteredData = data.collection.find((item: any) => {
-          // Check if item matches queryObj
-          for (const key in queryObj) {
-            if (item[key] !== queryObj[key]) {
-              return false;
-            }
-          }
-          return true;
-        });
-        return filteredData;
+        return $find(data, queryObj);
       },
       getData() {
         return this.data;
