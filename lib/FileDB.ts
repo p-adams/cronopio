@@ -53,7 +53,10 @@ function matchQuery(item: any, query: Record<string, unknown>): boolean {
   }
   return true;
 }
-function $find(data: any, queryObj?: Record<string, unknown>) {
+export function $find(
+  data: { collection: any[] },
+  queryObj?: Record<string, unknown>
+) {
   if (!queryObj) {
     return data;
   }
