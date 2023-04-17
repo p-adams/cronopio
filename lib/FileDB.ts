@@ -1,5 +1,7 @@
 import { SchemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
 
+type FindResult<T> = T | T[] | undefined;
+
 function isFileExistsSync(path: string): boolean {
   try {
     const stats = Deno.statSync(path);
@@ -56,15 +58,15 @@ function matchQuery(item: any, query: Record<string, unknown>): boolean {
 export function $find<T>(
   data: { collection: T[] },
   queryObj?: Record<string, unknown>
-) {
+): FindResult<T> {
   if (!queryObj) {
-    return data;
+    return data.collection;
   }
-  const filteredData = data.collection.find((item: any) => {
+  const matchedElement = data.collection.find((item: any) => {
     // Check if item matches queryObj
     return matchQuery(item, queryObj);
   });
-  return filteredData;
+  return matchedElement;
 }
 
 type FileDB<T extends CollectionInterface<any>> = {
@@ -74,9 +76,7 @@ type FileDB<T extends CollectionInterface<any>> = {
   getData(): T;
   getSchema(): SchemaType<T>;
   getPath(): string;
-  find<T>(
-    queryObject?: Record<string, unknown>
-  ): Promise<T | { collection: T[] } | undefined>;
+  find<T>(queryObject?: Record<string, unknown>): Promise<FindResult<T>>;
 };
 
 export function createFileDB<T extends CollectionInterface<any>>(
@@ -147,6 +147,14 @@ async function run() {
   };
   const db = createFileDB(schema, person, "./Person.json");
   const data = await db.find<Person>({ lastName: "Smith" });
-  console.log("data: ", data);
+  if (!data) {
+    console.log("Not found");
+    return;
+  }
+  if (Array.isArray(data)) {
+    console.log("data: ", data.length);
+  } else {
+    console.log("lastName: ", data.lastName);
+  }
 }
 run();
