@@ -53,14 +53,14 @@ function matchQuery(item: any, query: Record<string, unknown>): boolean {
   }
   return true;
 }
-export function $find(
-  data: { collection: any[] },
+export function $find<T>(
+  data: { collection: T[] },
   queryObj?: Record<string, unknown>
 ) {
   if (!queryObj) {
     return data;
   }
-  const filteredData = data.collection.filter((item: any) => {
+  const filteredData = data.collection.find((item: any) => {
     // Check if item matches queryObj
     return matchQuery(item, queryObj);
   });
@@ -74,7 +74,9 @@ type FileDB<T extends CollectionInterface<any>> = {
   getData(): T;
   getSchema(): SchemaType<T>;
   getPath(): string;
-  find(queryObject?: Record<string, unknown>): any;
+  find<T>(
+    queryObject?: Record<string, unknown>
+  ): Promise<T | { collection: T[] } | undefined>;
 };
 
 export function createFileDB<T extends CollectionInterface<any>>(
@@ -89,9 +91,9 @@ export function createFileDB<T extends CollectionInterface<any>>(
       schema,
       data,
       path,
-      async find(queryObj?: Record<string, unknown>) {
+      async find<T>(queryObj?: Record<string, unknown>) {
         const data = await readJsonFile(this.getPath());
-        return $find(data, queryObj);
+        return $find<T>(data, queryObj);
       },
       getData() {
         return this.data;
@@ -144,7 +146,7 @@ async function run() {
     ],
   };
   const db = createFileDB(schema, person, "./Person.json");
-  const data = await db.find({ lastName: "Smith" });
+  const data = await db.find<Person>({ lastName: "Smith" });
   console.log("data: ", data);
 }
 run();
