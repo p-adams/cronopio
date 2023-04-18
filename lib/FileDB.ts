@@ -8,6 +8,10 @@ export type FindOneResult<T> = T | T[] | undefined;
 
 export type Query = Record<string, unknown>;
 
+export interface IndexableQuery extends Query {
+  [key: string]: any;
+}
+
 type FileDB<T extends CollectionInterface<any>> = {
   schema: SchemaType<T>;
   data: T;

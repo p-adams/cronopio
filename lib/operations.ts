@@ -1,11 +1,25 @@
-import type { FindResult, FindOneResult, Query } from "./FileDB.ts";
+import type {
+  FindResult,
+  FindOneResult,
+  Query,
+  IndexableQuery,
+} from "./FileDB.ts";
 
-function matchQuery<T>(item: any, query: Query): boolean {
+function isQuery(item: Query): item is Query {
+  return typeof item === "object" && item !== null;
+}
+
+function matchQuery<T extends IndexableQuery>(item: T, query: Query): boolean {
   for (const key in query) {
     if (typeof query[key] === "object" && query[key] !== null) {
       // Recursively match nested properties
-      if (!matchQuery(item[key], query[key] as Query)) {
-        return false;
+      const nestedItem = item[key] as T;
+      if (isQuery(nestedItem)) {
+        if (!matchQuery(nestedItem, query[key] as Query)) {
+          return false;
+        }
+      } else {
+        throw new Error(`Expected ${key} to be an object.`);
       }
     } else {
       // Access nested properties using dot notation
