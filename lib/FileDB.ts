@@ -62,11 +62,11 @@ export function $find<T>(
   if (!queryObj) {
     return data.collection;
   }
-  const matchedElement = data.collection.find((item: any) => {
+  const filteredData = data.collection.filter((item: any) => {
     // Check if item matches queryObj
     return matchQuery(item, queryObj);
   });
-  return matchedElement;
+  return filteredData;
 }
 
 type FileDB<T extends CollectionInterface<any>> = {

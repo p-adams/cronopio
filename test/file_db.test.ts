@@ -3,7 +3,7 @@ import { $find } from "../lib/FileDB.ts";
 
 Deno.test("$find on shallow object properties", () => {
   assertEquals(
-    { firstName: "Mary", lastName: "Smith" },
+    [{ firstName: "Mary", lastName: "Smith" }],
     $find(
       {
         collection: [
@@ -18,18 +18,20 @@ Deno.test("$find on shallow object properties", () => {
 
 Deno.test("$find on nested object properties", () => {
   assertEquals(
-    {
-      contact: {
-        address: {
-          city: "ToonTown",
-          state: "CA",
-          street: "123 Acme Ave",
-          zip: 92802,
+    [
+      {
+        contact: {
+          address: {
+            city: "ToonTown",
+            state: "CA",
+            street: "123 Acme Ave",
+            zip: 92802,
+          },
         },
+        firstName: "John",
+        lastName: "Doe",
       },
-      firstName: "John",
-      lastName: "Doe",
-    },
+    ],
     $find(
       {
         collection: [
