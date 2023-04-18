@@ -8,6 +8,8 @@ export type FindOneResult<T> = T | T[] | undefined;
 
 export type Query = Record<string, unknown>;
 
+export type Document = Record<string, unknown> | Record<string, unknown>[];
+
 export interface IndexableQuery extends Query {
   [key: string]: any;
 }
@@ -21,6 +23,7 @@ type FileDB<T extends CollectionInterface<any>> = {
   getPath(): string;
   find<T>(queryObject?: Query): Promise<FindResult<T>>;
   findOne<T>(queryObject?: Query): Promise<FindOneResult<T>>;
+  insert<T>(doc: Document): Promise<number>;
 };
 
 export function createFileDB<T extends CollectionInterface<any>>(
@@ -42,6 +45,10 @@ export function createFileDB<T extends CollectionInterface<any>>(
       async findOne<T>(queryObj?: Query) {
         const data = await readJsonFile(this.getPath());
         return $findOne<T>(data, queryObj);
+      },
+      async insert<T>(_document: Document) {
+        const _data = await readJsonFile(this.getPath());
+        return 0;
       },
       getData() {
         return this.data;
