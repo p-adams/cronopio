@@ -1,5 +1,5 @@
 import { SchemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
-import { $find, $findOne } from "./operations.ts";
+import { $find, $findOne, $insert } from "./operations.ts";
 import { writeJsonToFile, readJsonFile } from "./io.ts";
 
 export type FindResult<T> = T[] | undefined;
@@ -46,9 +46,9 @@ export function createFileDB<T extends CollectionInterface<any>>(
         const data = await readJsonFile(this.getPath());
         return $findOne<T>(data, queryObj);
       },
-      async insert<T>(_document: Document) {
-        const _data = await readJsonFile(this.getPath());
-        return 0;
+      async insert<T>(document: Document) {
+        const data = await readJsonFile(this.getPath());
+        return $insert<T>(data, document);
       },
       getData() {
         return this.data;

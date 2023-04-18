@@ -3,6 +3,7 @@ import type {
   FindOneResult,
   Query,
   IndexableQuery,
+  Document,
 } from "./FileDB.ts";
 
 function isQuery(item: Query): item is Query {
@@ -65,4 +66,12 @@ export function $findOne<T>(
     return matchQuery(item, queryObj);
   });
   return element;
+}
+
+export function $insert<T>(
+  data: { collection: T[] },
+  document: Document
+): number {
+  // todo implement $insert, return 0 on success, -1 on error
+  return 0;
 }
