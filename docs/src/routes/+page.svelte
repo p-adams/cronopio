@@ -87,13 +87,33 @@ const personSchema = generateSchema(EulipotyphlaAnimals);`}</pre>
   collection: [
     {id: 0, name: "Shrew", family: "Soricidae", order: "Eulipotyphla"},
     {id: 1, name: "moonrat", family: "Erinaceidae", order: "Eulipotyphla"},
-    {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"}
+    {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"},
+    {id: 3, name: "Balkan mole ", family: "Talpidae", order: "Eulipotyphla"}
   ]
 };`}</pre>
   </section>
   <section>
     <h3>Create Database</h3>
     <pre>{@html `const db = createFileDB(schema, animals, "./Animals.json");`}</pre>
+  </section>
+  <section>
+    <h3>Query Database</h3>
+    <section>
+      <h4>Find</h4>
+      <pre>{@html `//find: find all matching documents, if no query is provided all documents are returned
+const talpids = db.find({family: "Talpidae"});
+
+returns [
+  {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"},
+  {id: 3, name: "Balkan mole ", family: "Talpidae", order: "Eulipotyphla"}
+]
+
+//findOne: find one matching document, if no query is provided all documents are returned
+const talpid = db.findOne({family: "Talpidae"});
+
+return {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"}
+            `}</pre>
+    </section>
   </section>
 </section>
 
