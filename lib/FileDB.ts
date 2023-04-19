@@ -56,8 +56,13 @@ export function createFileDB<T extends CollectionInterface<any>>(
         const data = await readJsonFile(this.getPath());
         const result = $insert<T>(data, document);
         if (result.success) {
-          await writeJsonToFile(result.collection, this.getPath());
-          return 0;
+          try {
+            await writeJsonToFile(result.collection, this.getPath());
+            return 0;
+          } catch (error) {
+            console.error("Error inserting document into collection:", error);
+            return -1;
+          }
         }
         return -1;
       },
@@ -113,11 +118,12 @@ async function run() {
   };
   const db = createFileDB(schema, person, "./Person.json");
   const data = await db.find<Person>({ lastName: "Smith" });
+  const res = db.insert<Person>({ firstName: "Jane", lastName: "Doe" });
   if (!data) {
     console.log("Not found");
     return;
   }
 
-  console.log("data: ", data);
+  console.log("data: ", data, res);
 }
 run();
