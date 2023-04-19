@@ -7,7 +7,7 @@ export type CollectionInterface<T> = {
 
 export type SchemaType<T extends CollectionInterface<any>> = JSONSchemaType<T>;
 
-export function SchemaValidator<T extends CollectionInterface<any>>(
+export function schemaValidator<T extends CollectionInterface<any>>(
   obj: T,
   schema: SchemaType<T>
 ) {
