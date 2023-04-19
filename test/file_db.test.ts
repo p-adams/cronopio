@@ -133,14 +133,16 @@ Deno.test("$findOne on nested object properties", () => {
 
 Deno.test("$insert single document", () => {
   assertEquals(
-    [{ id: 0, data: "foo" }],
+    { collection: [{ id: 0, data: "foo" }] },
     $insert({ collection: [] }, { id: 0, data: "foo" }).collection
   );
   assertEquals(
-    [
-      { id: 0, data: "foo" },
-      { id: 1, data: "bar" },
-    ],
+    {
+      collection: [
+        { id: 0, data: "foo" },
+        { id: 1, data: "bar" },
+      ],
+    },
     $insert({ collection: [{ id: 0, data: "foo" }] }, { id: 1, data: "bar" })
       .collection
   );
@@ -148,10 +150,12 @@ Deno.test("$insert single document", () => {
 
 Deno.test("$insert multiple documents", () => {
   assertEquals(
-    [
-      { id: 0, data: "foo" },
-      { id: 1, data: "bar" },
-    ],
+    {
+      collection: [
+        { id: 0, data: "foo" },
+        { id: 1, data: "bar" },
+      ],
+    },
     $insert({ collection: [] }, [
       { id: 0, data: "foo" },
       { id: 1, data: "bar" },

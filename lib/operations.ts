@@ -78,14 +78,14 @@ export function $insert<T>(
     return {
       success: false,
       errorMessage: "Invalid input data: collection is not an array",
-      collection: data.collection,
+      collection: { collection: data.collection },
     };
   }
   if (typeof document !== "object" || document === null) {
     return {
       success: false,
       errorMessage: "Invalid input data: document is not an object",
-      collection: data.collection,
+      collection: { collection: data.collection },
     };
   }
 
@@ -98,6 +98,6 @@ export function $insert<T>(
   }
   return {
     success: true,
-    collection: newCollection,
+    collection: { collection: newCollection },
   };
 }

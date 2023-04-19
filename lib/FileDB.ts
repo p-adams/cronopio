@@ -9,7 +9,7 @@ export type FindOneResult<T> = T | T[] | undefined;
 export interface InsertResult<T> {
   success: boolean;
   errorMessage?: string;
-  collection: T[];
+  collection: { collection: T[] };
 }
 
 export type Query = Record<string, unknown>;
@@ -118,7 +118,7 @@ async function run() {
   };
   const db = createFileDB(schema, person, "./Person.json");
   const data = await db.find<Person>({ lastName: "Smith" });
-  const res = db.insert<Person>({ firstName: "Jane", lastName: "Doe" });
+  const res = await db.insert<Person>({ firstName: "Jane", lastName: "Doe" });
   if (!data) {
     console.log("Not found");
     return;

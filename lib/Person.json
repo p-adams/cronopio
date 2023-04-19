@@ -1,5 +1,7 @@
-[
-  { "firstName": "John", "lastName": "Doe" },
-  { "firstName": "Mary", "lastName": "Smith" },
-  { "firstName": "Jane", "lastName": "Doe" }
-]
+{
+  "collection": [
+    { "firstName": "John", "lastName": "Doe" },
+    { "firstName": "Mary", "lastName": "Smith" },
+    { "firstName": "Jane", "lastName": "Doe" }
+  ]
+}
