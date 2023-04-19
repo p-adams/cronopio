@@ -7,22 +7,35 @@ function isFileExistsSync(path: string): boolean {
   }
 }
 
-export function writeJsonToFile<T>(data: T, path: string): boolean | string {
+export function createJsonFile<T>(data: T, path: string): boolean | string {
   try {
     const fileExists = isFileExistsSync(path);
     if (fileExists) {
       return true;
     }
-    const encoder = new TextEncoder();
-    Deno.writeFileSync(path, encoder.encode(JSON.stringify(data)));
+    writeJsonToFile(data, path);
     return false;
   } catch (e) {
     return e.message;
   }
 }
 
+export function writeJsonToFile<T>(data: T, path: string): boolean | string {
+  try {
+    const encoder = new TextEncoder();
+    Deno.writeFileSync(path, encoder.encode(JSON.stringify(data)));
+    return false;
+  } catch (error) {
+    return `Error writing JSON to file: ${error.message}`;
+  }
+}
+
 export async function readJsonFile(path: string): Promise<any> {
-  const jsonString = await Deno.readTextFile(path);
-  const data = JSON.parse(jsonString);
-  return data;
+  try {
+    const jsonString = await Deno.readTextFile(path);
+    const data = JSON.parse(jsonString);
+    return data;
+  } catch (error) {
+    throw new Error(`Error reading JSON file: ${error.message}`);
+  }
 }

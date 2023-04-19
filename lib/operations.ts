@@ -4,6 +4,7 @@ import type {
   Query,
   IndexableQuery,
   Document,
+  InsertResult,
 } from "./FileDB.ts";
 
 function isQuery(item: Query): item is Query {
@@ -70,8 +71,33 @@ export function $findOne<T>(
 
 export function $insert<T>(
   data: { collection: T[] },
-  document: Document
-): number {
-  // todo implement $insert, return 0 on success, -1 on error
-  return 0;
+  document: Document<T>
+): InsertResult<T> {
+  // Validate input data
+  if (!Array.isArray(data.collection)) {
+    return {
+      success: false,
+      errorMessage: "Invalid input data: collection is not an array",
+      collection: data.collection,
+    };
+  }
+  if (typeof document !== "object" || document === null) {
+    return {
+      success: false,
+      errorMessage: "Invalid input data: document is not an object",
+      collection: data.collection,
+    };
+  }
+
+  // Insert document(s) into collection
+  let newCollection: T[];
+  if (Array.isArray(document)) {
+    newCollection = [...data.collection, ...document];
+  } else {
+    newCollection = [...data.collection, document];
+  }
+  return {
+    success: true,
+    collection: newCollection,
+  };
 }

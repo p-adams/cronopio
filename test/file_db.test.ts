@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
-import { $find, $findOne } from "../lib/operations.ts";
+import { $find, $findOne, $insert } from "../lib/operations.ts";
 
 Deno.test("$find on shallow object properties", () => {
   assertEquals(
@@ -128,5 +128,33 @@ Deno.test("$findOne on nested object properties", () => {
       },
       { "contact.address.state": "CA" }
     )
+  );
+});
+
+Deno.test("$insert single document", () => {
+  assertEquals(
+    [{ id: 0, data: "foo" }],
+    $insert({ collection: [] }, { id: 0, data: "foo" }).collection
+  );
+  assertEquals(
+    [
+      { id: 0, data: "foo" },
+      { id: 1, data: "bar" },
+    ],
+    $insert({ collection: [{ id: 0, data: "foo" }] }, { id: 1, data: "bar" })
+      .collection
+  );
+});
+
+Deno.test("$insert multiple documents", () => {
+  assertEquals(
+    [
+      { id: 0, data: "foo" },
+      { id: 1, data: "bar" },
+    ],
+    $insert({ collection: [] }, [
+      { id: 0, data: "foo" },
+      { id: 1, data: "bar" },
+    ]).collection
   );
 });

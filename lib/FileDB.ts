@@ -1,14 +1,20 @@
 import { SchemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
 import { $find, $findOne, $insert } from "./operations.ts";
-import { writeJsonToFile, readJsonFile } from "./io.ts";
+import { createJsonFile, writeJsonToFile, readJsonFile } from "./io.ts";
 
 export type FindResult<T> = T[] | undefined;
 
 export type FindOneResult<T> = T | T[] | undefined;
 
+export interface InsertResult<T> {
+  success: boolean;
+  errorMessage?: string;
+  collection: T[];
+}
+
 export type Query = Record<string, unknown>;
 
-export type Document = Record<string, unknown> | Record<string, unknown>[];
+export type Document<T> = T | T[];
 
 export interface IndexableQuery extends Query {
   [key: string]: any;
@@ -23,7 +29,7 @@ type FileDB<T extends CollectionInterface<any>> = {
   getPath(): string;
   find<T>(queryObject?: Query): Promise<FindResult<T>>;
   findOne<T>(queryObject?: Query): Promise<FindOneResult<T>>;
-  insert<T>(doc: Document): Promise<number>;
+  insert<T>(doc: Document<T>): Promise<number>;
 };
 
 export function createFileDB<T extends CollectionInterface<any>>(
@@ -33,7 +39,7 @@ export function createFileDB<T extends CollectionInterface<any>>(
 ): FileDB<T> {
   try {
     SchemaValidator(data, schema);
-    writeJsonToFile(data, path);
+    createJsonFile(data, path);
     return {
       schema,
       data,
@@ -46,9 +52,14 @@ export function createFileDB<T extends CollectionInterface<any>>(
         const data = await readJsonFile(this.getPath());
         return $findOne<T>(data, queryObj);
       },
-      async insert<T>(document: Document) {
+      async insert<T>(document: Document<T>) {
         const data = await readJsonFile(this.getPath());
-        return $insert<T>(data, document);
+        const result = $insert<T>(data, document);
+        if (result.success) {
+          await writeJsonToFile(result.collection, this.getPath());
+          return 0;
+        }
+        return -1;
       },
       getData() {
         return this.data;
@@ -107,6 +118,6 @@ async function run() {
     return;
   }
 
-  console.log("data: ", data.length);
+  console.log("data: ", data);
 }
 run();
