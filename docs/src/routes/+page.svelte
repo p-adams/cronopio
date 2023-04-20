@@ -114,6 +114,20 @@ const talpid = db.findOne({family: "Talpidae"});
 return {id: 2, name: "Gansu mole", family: "Talpidae", order: "Eulipotyphla"}
             `}</pre>
     </section>
+    <section>
+      <h4>Insert</h4>
+      <pre>{@html `//insert 1) insert one document into collection
+db.insert({id: 4, name: "European hedgehog", family: "Erinaceidae", order: "Eulipotyphla"});
+
+// insert 2) insert multiple documents into collection
+db.insert([
+  {id: 4, name: "European hedgehog", family: "Erinaceidae", order: "Eulipotyphla"},
+  {id: 5, name: "Pyrenean desman", family: "Talpidae", order: "Eulipotyphla"}
+])
+
+return 0 if insert operation is successful; otherwise, -1
+      `}</pre>
+    </section>
   </section>
 </section>
 
