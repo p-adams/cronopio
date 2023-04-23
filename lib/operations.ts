@@ -146,3 +146,12 @@ export function $delete<T extends IndexableQuery>(
     return { collection: data.collection };
   }
 }
+
+export function $drop<T>(data: { collection: T[] }): { collection: T[] } {
+  try {
+    return { collection: [] };
+  } catch (err) {
+    console.error(err);
+    return { collection: data.collection };
+  }
+}

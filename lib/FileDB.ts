@@ -1,5 +1,12 @@
 import { schemaValidator, SchemaType, CollectionInterface } from "./Schema.ts";
-import { $find, $findOne, $insert } from "./operations.ts";
+import {
+  $find,
+  $findOne,
+  $insert,
+  $update,
+  $delete,
+  $drop,
+} from "./operations.ts";
 import { createJsonFile, writeJsonToFile, readJsonFile } from "./io.ts";
 
 export type FindResult<T> = T[] | undefined;
@@ -30,6 +37,9 @@ type FileDB<T extends CollectionInterface<any>> = {
   find<T>(queryObject?: Query): Promise<FindResult<T>>;
   findOne<T>(queryObject?: Query): Promise<FindOneResult<T>>;
   insert<T>(doc: Document<T>): Promise<number>;
+  update<T>(queryObject: Query, filter: Query): Promise<number>;
+  delete<T>(queryObject: Query): Promise<number>;
+  drop<T>(): Promise<number>;
 };
 
 export function createFileDB<T extends CollectionInterface<any>>(
@@ -65,6 +75,39 @@ export function createFileDB<T extends CollectionInterface<any>>(
           }
         }
         return -1;
+      },
+      async update<T>(queryObject: Query, updateObject: Query) {
+        try {
+          const data = await readJsonFile(this.getPath());
+          const result = $update(data, queryObject, updateObject);
+          await writeJsonToFile(result, this.getPath());
+          return 0;
+        } catch (error) {
+          console.error("Error updating document in collection:", error);
+          return -1;
+        }
+      },
+      async delete<T>(queryObject: Query) {
+        try {
+          const data = await readJsonFile(this.getPath());
+          const result = $delete(data, queryObject);
+          await writeJsonToFile(result, this.getPath());
+          return 0;
+        } catch (error) {
+          console.error("Error deleting document in collection:", error);
+          return -1;
+        }
+      },
+      async drop<T>() {
+        try {
+          const data = await readJsonFile(this.getPath());
+          const result = $drop(data);
+          await writeJsonToFile(result, this.getPath());
+          return 0;
+        } catch (error) {
+          console.error("Error dropping all documents in collection:", error);
+          return -1;
+        }
       },
       getData() {
         return this.data;

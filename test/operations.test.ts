@@ -5,6 +5,7 @@ import {
   $insert,
   $update,
   $delete,
+  $drop,
 } from "../lib/operations.ts";
 
 Deno.test("$find on shallow object properties", () => {
@@ -260,4 +261,14 @@ Deno.test("$delete nested document matching query", () => {
     { collection: [{ id: 1, name: { firstName: "Jane" } }] },
     $delete(data, { "name.firstName": "John" })
   );
+});
+
+Deno.test("$drop documents in a collection", () => {
+  const data = {
+    collection: [
+      { id: 0, name: { firstName: "John" } },
+      { id: 1, name: { firstName: "Jane" } },
+    ],
+  };
+  assertEquals({ collection: [] }, $drop(data));
 });
