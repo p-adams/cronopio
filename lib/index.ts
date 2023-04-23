@@ -33,16 +33,22 @@ async function run() {
     collection: [
       { firstName: "John", lastName: "Doe" },
       { firstName: "Mary", lastName: "Smith" },
+      { firstName: "Harun", lastName: "Ahmad" },
     ],
   };
   const db = createFileDB(schema, person, "./Person.json");
   const data = await db.find<Person>({ lastName: "Smith" });
   const res = await db.insert<Person>({ firstName: "Jane", lastName: "Doe" });
+  const updated = await db.update<Person>(
+    { firstName: "John" },
+    { lastName: "Doe2" }
+  );
+  const deleted = await db.delete<Person>({ lastName: "Doe" });
   if (!data) {
     console.log("Not found");
     return;
   }
 
-  console.log("data: ", data, res);
+  console.log("data: ", data, res, updated, deleted);
 }
 run();
