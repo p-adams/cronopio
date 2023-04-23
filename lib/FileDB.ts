@@ -34,6 +34,7 @@ type FileDB<T extends CollectionInterface<any>> = {
   data: T;
   path: string;
   getPath(): string;
+  collection<T>(): Promise<Collection<T>>;
   find<T>(queryObject?: Query): Promise<FindResult<T>>;
   findOne<T>(queryObject?: Query): Promise<FindOneResult<T>>;
   insert<T>(doc: Document<T>): Promise<number>;
@@ -111,6 +112,9 @@ export function createFileDB<T extends CollectionInterface<any>>(
       },
       getPath() {
         return this.path;
+      },
+      async collection<T>() {
+        return await readJsonFile<Collection<T>>(this.getPath());
       },
     };
   } catch (error) {
