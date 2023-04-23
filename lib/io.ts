@@ -30,7 +30,7 @@ export function writeJsonToFile<T>(data: T, path: string): boolean | string {
   }
 }
 
-export async function readJsonFile(path: string): Promise<any> {
+export async function readJsonFile<T>(path: string): Promise<T> {
   try {
     const jsonString = await Deno.readTextFile(path);
     const data = JSON.parse(jsonString);

@@ -5,6 +5,7 @@ import type {
   IndexableQuery,
   Document,
   InsertResult,
+  Collection,
 } from "./FileDB.ts";
 
 function isQuery(item: Query): item is Query {
@@ -42,7 +43,7 @@ function matchQuery<T extends IndexableQuery>(item: T, query: Query): boolean {
 }
 
 export function $find<T>(
-  data: { collection: T[] },
+  data: Collection<T>,
   queryObj?: Record<string, unknown>
 ): FindResult<T> {
   if (!queryObj) {
@@ -56,7 +57,7 @@ export function $find<T>(
 }
 
 export function $findOne<T>(
-  data: { collection: T[] },
+  data: Collection<T>,
   queryObj?: Record<string, unknown>
 ): FindOneResult<T> {
   if (!queryObj) {
@@ -70,7 +71,7 @@ export function $findOne<T>(
 }
 
 export function $insert<T>(
-  data: { collection: T[] },
+  data: Collection<T>,
   document: Document<T>
 ): InsertResult<T> {
   // Validate input data
@@ -103,10 +104,10 @@ export function $insert<T>(
 }
 
 export function $update<T>(
-  data: { collection: T[] },
+  data: Collection<T>,
   queryObj: Record<string, unknown>,
   updateObj: Record<string, unknown>
-): { collection: T[] } {
+): Collection<T> {
   const index = data.collection.findIndex((item: T) => {
     // Check if item matches queryObj
     return matchQuery(item, queryObj);
@@ -133,9 +134,9 @@ export function $update<T>(
 }
 
 export function $delete<T extends IndexableQuery>(
-  data: { collection: T[] },
+  data: Collection<T>,
   filter: Query
-): { collection: T[] } {
+): Collection<T> {
   try {
     const filteredData = data.collection.filter(
       (item) => !matchQuery(item, filter)
@@ -147,7 +148,7 @@ export function $delete<T extends IndexableQuery>(
   }
 }
 
-export function $drop<T>(data: { collection: T[] }): { collection: T[] } {
+export function $drop<T>(data: Collection<T>): Collection<T> {
   try {
     return { collection: [] };
   } catch (err) {

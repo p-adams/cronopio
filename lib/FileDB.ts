@@ -23,6 +23,8 @@ export type Query = Record<string, unknown>;
 
 export type Document<T> = T | T[];
 
+export type Collection<T> = { collection: T[] };
+
 export interface IndexableQuery extends Query {
   [key: string]: any;
 }
@@ -31,8 +33,6 @@ type FileDB<T extends CollectionInterface<any>> = {
   schema: SchemaType<T>;
   data: T;
   path: string;
-  getData(): T;
-  getSchema(): SchemaType<T>;
   getPath(): string;
   find<T>(queryObject?: Query): Promise<FindResult<T>>;
   findOne<T>(queryObject?: Query): Promise<FindOneResult<T>>;
@@ -55,15 +55,15 @@ export function createFileDB<T extends CollectionInterface<any>>(
       data,
       path,
       async find<T>(queryObj?: Query) {
-        const data = await readJsonFile(this.getPath());
+        const data = await readJsonFile<Collection<T>>(this.getPath());
         return $find<T>(data, queryObj);
       },
       async findOne<T>(queryObj?: Query) {
-        const data = await readJsonFile(this.getPath());
+        const data = await readJsonFile<Collection<T>>(this.getPath());
         return $findOne<T>(data, queryObj);
       },
       async insert<T>(document: Document<T>) {
-        const data = await readJsonFile(this.getPath());
+        const data = await readJsonFile<Collection<T>>(this.getPath());
         const result = $insert<T>(data, document);
         if (result.success) {
           try {
@@ -78,7 +78,7 @@ export function createFileDB<T extends CollectionInterface<any>>(
       },
       async update<T>(queryObject: Query, updateObject: Query) {
         try {
-          const data = await readJsonFile(this.getPath());
+          const data = await readJsonFile<Collection<T>>(this.getPath());
           const result = $update(data, queryObject, updateObject);
           await writeJsonToFile(result, this.getPath());
           return 0;
@@ -89,7 +89,7 @@ export function createFileDB<T extends CollectionInterface<any>>(
       },
       async delete<T>(queryObject: Query) {
         try {
-          const data = await readJsonFile(this.getPath());
+          const data = await readJsonFile<Collection<T>>(this.getPath());
           const result = $delete(data, queryObject);
           await writeJsonToFile(result, this.getPath());
           return 0;
@@ -100,7 +100,7 @@ export function createFileDB<T extends CollectionInterface<any>>(
       },
       async drop<T>() {
         try {
-          const data = await readJsonFile(this.getPath());
+          const data = await readJsonFile<Collection<T>>(this.getPath());
           const result = $drop(data);
           await writeJsonToFile(result, this.getPath());
           return 0;
@@ -108,12 +108,6 @@ export function createFileDB<T extends CollectionInterface<any>>(
           console.error("Error dropping all documents in collection:", error);
           return -1;
         }
-      },
-      getData() {
-        return this.data;
-      },
-      getSchema() {
-        return this.schema;
       },
       getPath() {
         return this.path;
