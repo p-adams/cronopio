@@ -123,9 +123,33 @@ db.insert({id: 4, name: "European hedgehog", family: "Erinaceidae", order: "Euli
 db.insert([
   {id: 4, name: "European hedgehog", family: "Erinaceidae", order: "Eulipotyphla"},
   {id: 5, name: "Pyrenean desman", family: "Talpidae", order: "Eulipotyphla"}
-])
+]);
 
 return 0 if insert operation is successful; otherwise, -1
+      `}</pre>
+    </section>
+    <section>
+      <h4>Update</h4>
+      <pre>{@html `//update a document in collection with id: 3
+db.update({id: 3}, {name: "Chinese mole"});
+
+return 0 if update operation is successful; otherwise, -1
+      `}</pre>
+    </section>
+    <section>
+      <h4>Delete</h4>
+      <pre>{@html `//delete a document in collection with id: 2
+db.delete({id: 2});
+
+return 0 if delete operation is successful; otherwise, -1
+      `}</pre>
+    </section>
+    <section>
+      <h4>Drop</h4>
+      <pre>{@html `//drop all documents in collection
+db.drop();
+
+return 0 if delete operation is successful; otherwise, -1
       `}</pre>
     </section>
   </section>
