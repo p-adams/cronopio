@@ -1,4 +1,5 @@
-import { createFileDB } from "./FileDB.ts";
+import * as cronopio from "https://deno.land/x/cronopio@v0.0.1-alpha/mod.ts";
+
 import type { SchemaType, CollectionInterface } from "./Schema.ts";
 
 async function run() {
@@ -36,7 +37,7 @@ async function run() {
       { firstName: "Harun", lastName: "Ahmad" },
     ],
   };
-  const db = createFileDB(schema, person, "./Person.json");
+  const db = cronopio.createFileDB(schema, person, "./Person.json");
   const data = await db.find<Person>({ lastName: "Smith" });
   const res = await db.insert<Person>({ firstName: "Jane", lastName: "Doe" });
   const updated = await db.update<Person>(
